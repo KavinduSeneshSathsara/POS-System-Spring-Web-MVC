@@ -49,4 +49,27 @@ public class CustomerController {
     public CustomerResponse getCustomer(@PathVariable ("customerId") String customerId){
          return customerService.getCustomer((customerId));
     }
+
+    @GetMapping
+    public List<CustomerDto> getAllCustomers(){
+        return customerService.getAllCustomers();
+    }
+
+    @PatchMapping("/{customerId}")
+    public ResponseEntity<Void> updateCustomer(@PathVariable ("customerId") String customerId, @RequestBody CustomerDto customerDto) {
+        customerService.updateCustomer(customerId, customerDto);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("/{customerId}")
+    public ResponseEntity<Void> deleteCustomer(@PathVariable ("customerId") String customerId){
+        try {
+            customerService.deleteCustomer(customerId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (CustomerNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
