@@ -38,10 +38,10 @@ public class CustomerController {
             return new ResponseEntity<>("Customer ID is empty or invalid! It should match 'C0000' format.", HttpStatus.BAD_REQUEST);
         }
         if (customerDto.getCustomerName() == null || !customerDto.getCustomerName().matches("^([A-Z][a-z]+)(\\s[A-Z][a-z]+)*$")) {
-            return new ResponseEntity<>("Customer Name is empty or invalid! It should contain at least 4 alphabetic characters.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Customer Name is empty or invalid! It should contain at least 4 alphabetic characters and first letter should be capital.", HttpStatus.BAD_REQUEST);
         }
         if (customerDto.getCustomerAddress() == null || !customerDto.getCustomerAddress().matches("^[A-Za-z0-9\\s,./-]+$")) {
-            return new ResponseEntity<>("Customer Address is empty or invalid! It should contain at least 5 alphanumeric characters.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Customer Address is empty or invalid!", HttpStatus.BAD_REQUEST);
         }
         if (customerDto.getCustomerSalary() <= 0) {
             return new ResponseEntity<>("Customer Salary is empty or invalid! It must be greater than 0.", HttpStatus.BAD_REQUEST);
@@ -84,11 +84,11 @@ public class CustomerController {
         }
 
         if (customerId == null || !customerId.matches("^C\\d{4}$")) {
-            return new ResponseEntity<>("Customer ID is empty or invalid!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Customer ID is empty or invalid! It should match 'C0000' format.!", HttpStatus.BAD_REQUEST);
         }
 
         if (customerDto.getCustomerName() == null || !customerDto.getCustomerName().matches("^([A-Z][a-z]+)(\\s[A-Z][a-z]+)*$")) {
-            return new ResponseEntity<>("Customer Name is empty or invalid!", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Customer Name is empty or invalid! It should contain at least 4 alphabetic characters and first letter should be capital.!", HttpStatus.BAD_REQUEST);
         }
 
         if (customerDto.getCustomerAddress() == null || !customerDto.getCustomerAddress().matches("^[A-Za-z0-9\\s,./-]+$")) {
