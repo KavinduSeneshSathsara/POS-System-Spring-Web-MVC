@@ -6,9 +6,9 @@ import lk.ijse.gdse68.aad.posbackend.dto.ItemDto;
 import java.util.List;
 
 public interface ItemService{
-    public void saveItem(ItemDto itemDto);
-    public void updateItem(String itemCode, ItemDto itemDto);
-    public ItemResponse getItem(String itemCode);
-    public List<ItemDto> getAllItems();
-    public void deleteItem(String itemCode);
+    void saveItem(ItemDto itemDto);
+    void updateItem(String itemCode, ItemDto itemDto);
+    ItemResponse getItem(String itemCode);
+    List<ItemDto> getAllItems();
+    void deleteItem(String itemCode);
 }
