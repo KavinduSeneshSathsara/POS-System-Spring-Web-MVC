@@ -29,7 +29,7 @@ public class CustomerController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> saveCustomer(@RequestBody CustomerDto customerDto) {
-
+        logger.info("Request to save customer: {}", customerDto);
         if (customerDto == null) {
             logger.error("Customer Dto is null");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -51,8 +51,10 @@ public class CustomerController {
                 logger.warn("Successfully saved customer: {}", customerDto);
                 return new ResponseEntity<>(HttpStatus.CREATED);
             } catch (DataPersistFailedException e) {
+                logger.error("Failed to persist customer data: {}", customerDto, e);
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } catch (Exception e) {
+                logger.error("Unexpected error while saving customer data: {}", customerDto, e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
     }
@@ -60,7 +62,10 @@ public class CustomerController {
 
     @GetMapping("/{customerId}")
     public CustomerResponse getCustomer(@PathVariable ("customerId") String customerId){
-         return customerService.getCustomer((customerId));
+        logger.info("Request to get customer with customerId: {}", customerId);
+        CustomerResponse response = customerService.getCustomer(customerId);
+        logger.info("Successfully retrieved customer: {}", response);
+        return response;
     }
 
     @GetMapping(value = "/all", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -120,8 +125,10 @@ public class CustomerController {
             logger.info("Customer with ID {} deleted successfully", customerId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (CustomerNotFoundException e) {
+            logger.warn("Customer not found with customerId: {}", customerId);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            logger.error("Unexpected error while deleting customer with customerId: {}", customerId);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

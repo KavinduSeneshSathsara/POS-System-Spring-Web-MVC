@@ -35,7 +35,7 @@ public class ItemController {
 
     @PostMapping
     public ResponseEntity<String> saveItem(@RequestBody ItemDto itemDto){
-
+        logger.info("Request to save item: {}", itemDto);
         if (itemDto == null) {
             logger.error("Item Dto is null");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -54,11 +54,13 @@ public class ItemController {
         } else {
             try {
                 itemService.saveItem(itemDto);
-                logger.info("Item saved");
+                logger.info("Successfully saved item: {}", itemDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
             } catch (DataPersistFailedException e) {
+                logger.error("Failed to persist item data: {}", itemDto, e);
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } catch (Exception e) {
+                logger.error("Unexpected error while saving item: {}", itemDto, e);
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
@@ -66,6 +68,7 @@ public class ItemController {
 
     @PatchMapping("/{itemCode}")
     public ResponseEntity<String> updateItem(@PathVariable ("itemCode") String itemCode, @RequestBody ItemDto itemDto) {
+        logger.info("Request to update item with ID: {}", itemCode);
         if (itemDto == null) {
             logger.error("Item Dto is null");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
@@ -84,7 +87,7 @@ public class ItemController {
         }
         try {
             itemService.updateItem(itemCode, itemDto);
-            logger.info("Item updated");
+            logger.info("Successfully updated item with ID: {}", itemCode);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (CustomerNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -95,29 +98,37 @@ public class ItemController {
 
     @GetMapping ("/{itemCode}")
     public ItemResponse getItem(@PathVariable ("itemCode") String itemCode){
-        return itemService.getItem(itemCode);
+        logger.info("Request to get item with ID: {}", itemCode);
+        ItemResponse response = itemService.getItem(itemCode);
+        logger.info("Successfully retrieved item: {}", response);
+        return response;
     }
 
     @GetMapping(value = "/allItems", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ItemDto> getAllItems(){
+        logger.info("Request to get all items");
         List<ItemDto> itemDtos = itemService.getAllItems();
         logger.info("Fetched {} Items from the database", itemDtos.size());
 
         for (ItemDto itemDto : itemDtos){
             logger.info("Item Dto: {}", itemDto);
         }
+        logger.info("Successfully retrieved all items, count: {}", itemDtos.size());
         return itemDtos;
     }
 
     @DeleteMapping("/{itemCode}")
     public ResponseEntity<Void> deleteItem(@PathVariable ("itemCode") String itemCode) {
+        logger.info("Request to delete item with ID: {}", itemCode);
         try {
             itemService.deleteItem(itemCode);
-            logger.info("Item deleted");
+            logger.info("Successfully deleted item with ID: {}", itemCode);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (ItemNotFoundException e) {
+            logger.warn("Item not found with ID: {}", itemCode);
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {
+            logger.error("Unexpected error while deleting item with ID: {}", itemCode);
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

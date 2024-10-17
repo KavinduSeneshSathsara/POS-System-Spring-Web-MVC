@@ -13,6 +13,8 @@ import lk.ijse.gdse68.aad.posbackend.excexption.ItemNotFoundException;
 import lk.ijse.gdse68.aad.posbackend.util.AppUtil;
 import lk.ijse.gdse68.aad.posbackend.util.Mapping;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +25,9 @@ import java.util.stream.Collectors;
 @Transactional
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService{
+
+    private static final Logger logger = LoggerFactory.getLogger(OrderServiceImpl.class);
+
     @Autowired
     private final OrdersDao ordersDao;
     @Autowired
@@ -32,6 +37,7 @@ public class OrderServiceImpl implements OrderService{
 
     @Override
     public String saveOrder(OrderDto orderDto) {
+        logger.info("Attempting to save order: {}", orderDto);
         orderDto.setOrderId(AppUtil.createOrderId());
         orderDto.setOrderDateTime(AppUtil.getCurrentTime());
         orderDto.setTotal(orderDto.getOrderDetails().stream().mapToDouble(detail ->detail.getQty() * detail.getUnitPrice()).sum());
@@ -61,15 +67,18 @@ public class OrderServiceImpl implements OrderService{
     private boolean updateItemQty(OrderDetailDto orderDetailsDto) {
         Item item = itemDao.findById(orderDetailsDto.getItemCode()).orElse(null);
         if (item == null) {
+            logger.warn("Item not found: {}", orderDetailsDto.getItemCode());
             throw new ItemNotFoundException("Item not found");
         }
 
         if (item.getItemQty() < orderDetailsDto.getQty()) {
+            logger.warn("Item qty not enough: {}", item);
             throw new ItemNotFoundException("Item qty not enough");
         }
 
         item.setItemQty(item.getItemQty() - orderDetailsDto.getQty());
         itemDao.save(item);
+        logger.info("Item qty updated: {}", item);
         return true;
     }
 }

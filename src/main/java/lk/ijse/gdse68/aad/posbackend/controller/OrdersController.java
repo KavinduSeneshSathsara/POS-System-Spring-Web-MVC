@@ -27,18 +27,20 @@ public class OrdersController {
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void>  createOrder(@RequestBody OrderDto orderDto){
+        logger.info("Request to save order: {}", orderDto);
         if (orderDto == null){
+            logger.warn("Received null orderDto for saving: {}", orderDto);
             return ResponseEntity.badRequest().build();
         }else {
             try {
                 orderService.saveOrder(orderDto);
-                logger.info("Order saved : " + orderDto);
+                logger.info("Successfully saved order: {}", orderDto);
                 return ResponseEntity.created(null).build();
             } catch (DataPersistFailedException e) {
-                logger.error(e.getMessage());
+                logger.error("Failed to persist order data: {}", orderDto, e);
                 return ResponseEntity.internalServerError().build();
             } catch (Exception e) {
-                logger.error(e.getMessage());
+                logger.error("Error while saving order: {}", orderDto, e);
                 return ResponseEntity.internalServerError().build();
             }
         }
