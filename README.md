@@ -68,20 +68,15 @@ The POS Backend project is a Spring Boot application designed to manage point-of
   - **Request Body**:
     ```json
     {
-      "customerId": "C0001",
-      "items": [
-        {
-          "itemId": "I0002",
-          "quantity": 540
-        },
-        {
-          "itemId": "I0002",
-          "quantity": 50
-        }
-      ]
+     "customerId":"C0001",
+     "orderDetails":[
+			{
+				"itemCode":"I0003",
+				"qty":50,
+				"unitPrice":100
+            }
+     ]
     }
-    ```
-
 - **Get All Orders**
   - **Endpoint**: `GET /api/v1/orders`
 
