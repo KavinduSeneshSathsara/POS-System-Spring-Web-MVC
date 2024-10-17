@@ -107,4 +107,7 @@ API documentation URL: https://documenter.getpostman.com/view/35384474/2sAXxV6VZ
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-```
+
+
+© All rights reserved. This project is created and maintained by Kavindu Senesh.
+
