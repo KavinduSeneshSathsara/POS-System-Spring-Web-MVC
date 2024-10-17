@@ -6,7 +6,7 @@
     </appender>
 
     <appender name="File" class="ch.qos.logback.core.FileAppender">
-        <file>D:\AAD Module\Restart_module_assignment2\Spring_POS_System_API\src\main\resources\log\pos.log</file>
+        <file>D:\GDSE 68\AAD 2\POS-Backend\src\main\resources\log\pos.log</file>
         <encoder>
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
         </encoder>
