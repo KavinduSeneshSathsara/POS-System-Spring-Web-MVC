@@ -33,28 +33,20 @@ The POS Backend project is a Spring Boot application designed to manage point-of
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/POS-Backend.git
-   cd POS-Backend
+   git clone https://github.com/KavinduSeneshSathsara/POS-System-Spring-Web-MVC.git
+   cd POS-System-Spring-Web-MVC
    ```
-
-2. Update the `application.properties` file with your MySQL database connection details:
-   ```properties
-   spring.datasource.url=jdbc:mysql://localhost:3306/your_database_name
-   spring.datasource.username=your_username
-   spring.datasource.password=your_password
-   ```
-
-3. Build the project using Maven:
+2. Build the project using Maven:
    ```bash
    mvn clean install
    ```
 
-4. Run the application:
+3. Run the application:
    ```bash
    mvn spring-boot:run
    ```
 
-5. Access the API documentation via Postman or your browser at:
+4. Access the API documentation via Postman or your browser at:
    ```
    http://localhost:8080/POS_Backend/api/v1/orders
    ```
@@ -89,14 +81,6 @@ The POS Backend project is a Spring Boot application designed to manage point-of
 
 - **Delete Order**
   - **Endpoint**: `DELETE /api/v1/orders/{id}`
-
-## Contributing
-
-1. Fork the repository.
-2. Create a new branch: `git checkout -b feature/YourFeature`.
-3. Make your changes and commit them: `git commit -m 'Add some feature'`.
-4. Push to the branch: `git push origin feature/YourFeature`.
-5. Open a Pull Request.
 
 API Documentation
 
